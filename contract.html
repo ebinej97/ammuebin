@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Relationship Contract 📜</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;700&family=Courier+Prime:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            /* Vibrant Valentine Gradient */
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Courier Prime', monospace; 
+            display: flex;
+            justify-content: center;
+            /* Changed to align items to the top area */
+            align-items: flex-start; 
+            overflow-x: hidden;
+        }
+
+        /* The Main Layout Wrapper */
+        .layout-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            /* ALIGNMENT FIX: This pulls images to the top instead of center */
+            align-items: flex-start; 
+            gap: 40px; 
+            width: 100%;
+            max-width: 1300px;
+            margin-top: 20px; /* Slight space from top of screen */
+        }
+
+        /* Polaroid Photo Frame Styling */
+        .photo-frame {
+            background: #ffffff;
+            padding: 15px 15px 60px 15px; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-radius: 2px;
+            width: 200px; /* Slightly smaller to fit better */
+            position: relative;
+            flex-shrink: 0; 
+            transition: transform 0.3s ease;
+            
+            /* ALIGNMENT FIX: Pushes photo down to match Article 1 */
+            margin-top: 120px; 
+        }
+
+        .photo-frame:hover {
+            transform: scale(1.05) translateY(-5px) !important; 
+            z-index: 20;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover; 
+            border: 1px solid #ddd;
+        }
+
+        .caption {
+            font-family: 'Pacifico', cursive; 
+            color: #d81b60;
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            left: 0;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+
+        /* Tilt Ebin's photo left, Ammu's photo right */
+        .ebin-pic {
+            transform: rotate(-4deg);
+        }
+
+        .ammu-pic {
+            transform: rotate(4deg);
+        }
+
+        /* The Paper Document (Contract) */
+        .container {
+            max-width: 650px;
+            background-color: #fffaf0; 
+            color: #333; 
+            padding: 50px;
+            border-radius: 5px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
+            position: relative;
+            border: 1px solid #dcdcdc;
+            z-index: 10;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: 3px solid #d81b60;
+            color: #d81b60;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transform: rotate(-15deg);
+            opacity: 0.7;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            mix-blend-mode: multiply; 
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #d81b60;
+            padding-bottom: 20px;
+            color: #d81b60;
+            font-size: 2rem;
+            margin-top: 0;
+        }
+
+        .sub-header {
+            text-align: center; 
+            font-size: 0.9rem; 
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .clause-list {
+            margin-top: 30px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .clause {
+            margin-bottom: 25px;
+            padding-left: 20px;
+            border-left: 4px solid #d81b60; 
+            background: rgba(255, 192, 203, 0.1); 
+            padding: 15px;
+        }
+
+        .clause-title {
+            font-weight: bold;
+            color: #c2185b;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .malayalam-note {
+            display: block;
+            font-family: 'Noto Sans Malayalam', sans-serif;
+            font-size: 0.95rem;
+            color: #555; 
+            font-style: italic;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .agreement-box {
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff0f5; 
+            border: 2px dashed #d81b60;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 10px;
+            accent-color: #d81b60;
+            cursor: not-allowed;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.4);
+        }
+
+        button:hover {
+            background-color: #ad1457;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive: On small screens, hide photos */
+        @media (max-width: 1000px) {
+            .photo-frame {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="layout-wrapper">
+        
+        <div class="photo-frame ebin-pic">
+            <img src="https://i.postimg.cc/76DgVDWX/IMG-4595.avif" alt="Ebin">
+            <div class="caption">Ebin 💻</div>
+        </div>
+
+        <div class="container">
+            <div class="stamp">OFFICIAL DOCUMENT<br>Ref: LOVE-2026</div>
+            
+            <h1>RELATIONSHIP AGREEMENT</h1>
+            <p class="sub-header">Effective Date: Immediately | Parties: Ebin & Ammu</p>
+
+            <div class="clause-list">
+                <div class="clause">
+                    <span class="clause-title">ARTICLE 1: The "Ebin is Right" Act</span>
+                    The Girlfriend admits that in any future argument, the Boyfriend (Ebin) is logically correct by default.
+                    <span class="malayalam-note">(അതുകൊണ്ട് വെറുതെ തർക്കിക്കാൻ വരണ്ട!)</span>
+                </div>
+
+                <div class="clause">
+                    <span class="clause-title">ARTICLE 2: The Chai Treaty</span>
+                    Even though the Girlfriend dislikes Tea, she legally agrees to prepare/buy 'Special Chai' for Ebin whenever requested.
+                    <span class="malayalam-note">(എനിക്ക് ചായ ഇഷ്ടമല്ലെങ്കിലും, Ebin-ന് വേണ്ടി ഞാൻ ചായ ഉണ്ടാക്കി കൊടുക്കാം!)</span>
+                </div>
+
+                <div class="clause">
+                    <span class="clause-title">ARTICLE 3: Subway Cookie Tax</span>
+                    As a manager at Subway, the Girlfriend is bound to provide free Cookies (White Chip Macadamia preferred) as a relationship tax.
+                    <span class="malayalam-note">(കുക്കീസ് എനിക്ക് അവകാശപ്പെട്ടതാണ്.)</span>
+                </div>
+
+                <div class="clause">
+                    <span class="clause-title">ARTICLE 4: The 'Chali' Appreciation Act</span>
+                    The Girlfriend must laugh at all of Ebin's jokes, no matter how dry, sarcastic, or 'chali' (cringe) they are.
+                    <span class="malayalam-note">(എന്റെ തമാശകൾ 'ചളി' ആണെങ്കിൽ കൂടി, സഹിച്ചു ചിരിച്ചോണം!)</span>
+                </div>
+
+                 <div class="clause">
+                    <span class="clause-title">ARTICLE 5: The 'No Refund' Policy</span>
+                    Once this contract is signed, there is no returning Ebin. You are stuck with him forever.
+                    <span class="malayalam-note">(ഇനി തിരിച്ചു കൊടുക്കാൻ പറ്റില്ല... പെട്ടു മോളെ പെട്ടു! 😉)</span>
+                </div>
+            </div>
+
+            <div class="agreement-box">
+                <label style="font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <input type="checkbox" checked disabled> 
+                    I, Ammu, accept all terms & conditions unconditionally.
+                </label>
+                <br>
+                <button onclick="signContract()">SIGN & SEAL ❤️</button>
+            </div>
+        </div>
+
+        <div class="photo-frame ammu-pic">
+            <img src="https://i.postimg.cc/kXFHyhHj/6dced47e-bc65-409f-adff-7c88b3da5ba4.jpg" alt="Ammu">
+            <div class="caption">Ammu 🥪</div>
+        </div>
+
+    </div>
+
+    <script>
+    function signContract() {
+        // 1. Show the funny alert
+        alert("Contract Accepted! System Locked. \nCongratulations Ammu, you have successfully subscribed to 'Ebin Premium' for a lifetime!");
+
+        // 2. Add a new button to the page dynamically
+        const agreementBox = document.querySelector('.agreement-box');
+        
+        // Check if button already exists to prevent duplicates
+        if (!document.getElementById('giftBtn')) {
+            const giftBtn = document.createElement('button');
+            giftBtn.id = 'giftBtn';
+            giftBtn.innerText = "CLAIM YOUR REWARD 🎁";
+            giftBtn.style.backgroundColor = "#4CAF50"; // Green color
+            giftBtn.style.marginTop = "20px";
+            giftBtn.style.animation = "bounce 1s infinite"; // Attention seeking animation
+            
+            // Add click event to go to gift page
+            giftBtn.onclick = function() {
+                window.location.href = "gift.html";
+            };
+
+            // Add to the page
+            agreementBox.appendChild(giftBtn);
+            
+            // Scroll to the new button
+            giftBtn.scrollIntoView({behavior: "smooth"});
+        }
+    }
+</script>
+</body>
+</html>

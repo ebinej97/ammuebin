@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catch Ebin's Love ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            /* Animated Gradient Background */
+            background: linear-gradient(180deg, #ffdde1 0%, #ee9ca7 100%);
+            font-family: 'Bungee', cursive;
+            touch-action: none; 
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Moving Background Pattern (Optional) */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 1;
+        }
+
+        /* Heads Up Display */
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: #d81b60;
+            text-shadow: 2px 2px 0px white;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* THE PLAYER (AMMU'S PHOTO) */
+        #player {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px; 
+            height: 80px;
+            z-index: 5;
+            transition: left 0.08s linear; /* Smooth drag */
+        }
+
+        #player img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Falling Items */
+        .item {
+            position: absolute;
+            font-size: 2.5rem;
+            top: -50px;
+            z-index: 4;
+            /* Animation to make them wobble/spin as they fall */
+            animation: wobble 2s infinite ease-in-out;
+        }
+
+        @keyframes wobble {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Particle Explosion (When caught) */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 6;
+            animation: pop 0.5s ease-out forwards;
+        }
+
+        @keyframes pop {
+            to { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+
+        /* Screens (Start/Win/Lose) */
+        .overlay-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 20;
+            text-align: center;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: #d81b60;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Bungee', cursive;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 0 #ad1457;
+            transition: transform 0.1s;
+        }
+        
+        button:active { transform: translateY(4px); box-shadow: 0 0 0; }
+
+        .controls-hint {
+            position: absolute;
+            bottom: 30px;
+            color: rgba(255,255,255,0.7);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div class="bg-pattern"></div>
+
+        <div id="hud">Love: <span id="score">0</span>%</div>
+
+        <div id="player">
+            <img src="https://i.postimg.cc/kXFHyhHj/6dced47e-bc65-409f-adff-7c88b3da5ba4.jpg" alt="Ammu">
+        </div>
+
+        <div id="start-screen" class="overlay-screen">
+            <h1 style="color: #ffeb3b;">Catch Ebin's Love ❤️</h1>
+            <p style="font-family: 'Poppins'; font-size: 1.1rem; max-width: 300px;">
+                Collect hearts to reach 100% Love!<br>
+                Avoid the Tea! ☕
+            </p>
+            <div style="text-align: left; margin: 20px; font-family: 'Poppins'; line-height: 1.6;">
+                ❤️ Heart = +10%<br>
+                💌 Letter = +20%<br>
+                🐟 Fish = +5% (Bonus)<br>
+                💔 Broken = -10%<br>
+                ☕ Tea = <b>GAME OVER!</b>
+            </div>
+            <button onclick="startGame()">START GAME</button>
+            <div class="controls-hint">Tap Left / Right to Move</div>
+        </div>
+
+        <div id="game-over-screen" class="overlay-screen" style="display: none;">
+            <h1 style="color: #ff4444;">OH NO! ☕</h1>
+            <p style="font-family: 'Poppins';">You drank the Tea!<br>Ebin is disappointed.</p>
+            <button onclick="startGame()">TRY AGAIN ↺</button>
+        </div>
+
+        <div id="win-screen" class="overlay-screen" style="display: none;">
+            <h1 style="color: #4CAF50;">100% LOVE! 🎉</h1>
+            <p style="font-family: 'Poppins';">You are officially the<br>Best Girlfriend Ever.</p>
+            <div style="font-size: 5rem; margin: 10px;">💑</div>
+            <button onclick="finalMessage()">CLAIM REWARD ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const player = document.getElementById('player');
+        const container = document.getElementById('game-container');
+        const scoreEl = document.getElementById('score');
+        
+        let score = 0;
+        let gameActive = false;
+        let playerPos = 50; 
+        let items = [];
+        let loopInterval, spawnInterval;
+        let speedMultiplier = 1;
+
+        // --- CONTROLS ---
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            if (e.key === 'ArrowLeft') movePlayer(-5);
+            if (e.key === 'ArrowRight') movePlayer(5);
+        });
+
+        // Touch / Mouse (Tap sides)
+        container.addEventListener('pointerdown', (e) => {
+            if (!gameActive) return;
+            const screenW = window.innerWidth;
+            if (e.clientX < screenW / 2) movePlayer(-10);
+            else movePlayer(10);
+        });
+
+        function movePlayer(amt) {
+            playerPos += amt;
+            if (playerPos < 5) playerPos = 5;
+            if (playerPos > 88) playerPos = 88; // Keep inside screen
+            player.style.left = playerPos + '%';
+        }
+
+        // --- GAME LOGIC ---
+        function startGame() {
+            document.querySelectorAll('.overlay-screen').forEach(el => el.style.display = 'none');
+            
+            score = 0;
+            scoreEl.innerText = score;
+            gameActive = true;
+            items = [];
+            playerPos = 50;
+            player.style.left = '50%';
+            speedMultiplier = 1;
+
+            // Clear old items
+            document.querySelectorAll('.item').forEach(e => e.remove());
+            document.querySelectorAll('.particle').forEach(e => e.remove());
+
+            loopInterval = setInterval(gameLoop, 20);
+            spawnInterval = setInterval(spawnItem, 800);
+        }
+
+        const ITEMS = [
+            { icon: '❤️', type: 'heart', val: 10, chance: 0.4 },
+            { icon: '💌', type: 'letter', val: 20, chance: 0.1 }, // Rare
+            { icon: '🐟', type: 'fish', val: 5, chance: 0.2 },
+            { icon: '💔', type: 'bad', val: -10, chance: 0.15 },
+            { icon: '☕', type: 'death', val: 0, chance: 0.15 }
+        ];
+
+        function spawnItem() {
+            if (!gameActive) return;
+
+            const div = document.createElement('div');
+            div.classList.add('item');
+            
+            // Weighted Random Choice
+            const rand = Math.random();
+            let cumulative = 0;
+            let choice = ITEMS[0];
+            
+            for (let item of ITEMS) {
+                cumulative += item.chance;
+                if (rand < cumulative) {
+                    choice = item;
+                    break;
+                }
+            }
+
+            div.innerText = choice.icon;
+            div.dataset.type = choice.type;
+            div.dataset.val = choice.val;
+            
+            div.style.left = Math.random() * 85 + 5 + '%'; 
+            div.style.top = '-60px';
+
+            container.appendChild(div);
+            
+            // Variable speed based on difficulty
+            const speed = (Math.random() * 3 + 3) * speedMultiplier;
+            
+            items.push({ element: div, top: -60, speed: speed });
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            items.forEach((obj, i) => {
+                obj.top += obj.speed;
+                obj.element.style.top = obj.top + 'px';
+
+                // Hit Detection
+                const pRect = player.getBoundingClientRect();
+                const iRect = obj.element.getBoundingClientRect();
+
+                // Simple collision check (Avatar head area)
+                if (
+                    iRect.bottom >= pRect.top + 10 &&
+                    iRect.top <= pRect.bottom &&
+                    iRect.right >= pRect.left + 10 &&
+                    iRect.left <= pRect.right - 10
+                ) {
+                    catchItem(obj, i);
+                }
+
+                // Remove if off screen
+                if (obj.top > window.innerHeight) {
+                    obj.element.remove();
+                    items.splice(i, 1);
+                }
+            });
+        }
+
+        function catchItem(obj, index) {
+            // 1. Remove Item
+            const type = obj.element.dataset.type;
+            const val = parseInt(obj.element.dataset.val);
+            const rect = obj.element.getBoundingClientRect(); // Get pos for explosion
+            
+            obj.element.remove();
+            items.splice(index, 1);
+
+            // 2. Logic
+            if (type === 'death') {
+                gameOver();
+                return;
+            }
+
+            // Update Score
+            score += val;
+            if (score < 0) score = 0;
+            if (score > 100) score = 100;
+            scoreEl.innerText = score;
+
+            // 3. Effects
+            createExplosion(rect.left, rect.top, type === 'bad' ? '#555' : '#ffeb3b');
+            
+            if (type === 'bad') {
+                container.style.backgroundColor = '#ffcccb'; // Flash Red
+                setTimeout(() => container.style.background = '', 100);
+            }
+
+            // Increase difficulty
+            if (score > 40) speedMultiplier = 1.3;
+            if (score > 70) speedMultiplier = 1.6;
+
+            // WIN
+            if (score >= 100) {
+                gameWin();
+            }
+        }
+
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.background = color;
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                
+                // Random direction
+                const tx = (Math.random() - 0.5) * 100 + 'px';
+                const ty = (Math.random() - 0.5) * 100 + 'px';
+                p.style.setProperty('--tx', tx);
+                p.style.setProperty('--ty', ty);
+                
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 500);
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+            clearInterval(loopInterval);
+            clearInterval(spawnInterval);
+            document.getElementById('game-over-screen').style.display = 'flex';
+        }
+
+        function gameWin() {
+            gameActive = false;
+            clearInterval(loopInterval);
+            clearInterval(spawnInterval);
+            document.getElementById('win-screen').style.display = 'flex';
+            launchConfetti();
+        }
+
+        function finalMessage() {
+            alert("Congrats Ammu! \nYou have successfully collected all my love. \n\nNow call me! ❤️");
+        }
+
+        function launchConfetti() {
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'];
+            for(let i=0; i<100; i++) {
+                const c = document.createElement('div');
+                c.style.position = 'fixed';
+                c.style.width = '10px'; c.style.height = '10px';
+                c.style.background = colors[Math.floor(Math.random()*colors.length)];
+                c.style.left = Math.random()*100+'vw'; c.style.top = '-10px';
+                c.style.zIndex = 1000;
+                document.body.appendChild(c);
+                setTimeout(() => { c.style.top = '110vh'; c.style.transition = 'top 3s ease'; }, 10);
+            }
+        }
+    </script>
+</body>
+</html>

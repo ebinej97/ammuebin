@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Gift 🎁</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;700&family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            /* Vibrant Love Gradient */
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        p {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Card Container */
+        .gift-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            z-index: 10;
+        }
+
+        /* Individual Cards */
+        .gift-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            width: 280px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Hover Effect: Lift up */
+        .gift-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .gift-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain; 
+            margin-bottom: 15px;
+        }
+
+        /* Special style for the Hug GIF to make it fill better */
+        .hug-gif {
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .gift-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .gift-price {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .btn-select {
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+
+        /* EXPENSIVE ITEMS: Turn Red on Hover */
+        .expensive-card .btn-select {
+            background-color: #333;
+        }
+        .expensive-card:hover .btn-select {
+            background-color: #d32f2f; /* Red warning */
+            content: "TOO EXPENSIVE";
+        }
+
+        /* FREE ITEM: Turns Green and Pulses */
+        .free-card {
+            border: 4px solid #e91e63; /* Pink Border */
+            animation: pulse 2s infinite;
+        }
+        
+        .free-card .btn-select {
+            background-color: #e91e63;
+        }
+        
+        .free-card:hover .btn-select {
+            background-color: #4CAF50; /* Green success */
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(233, 30, 99, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
+        }
+
+        /* Success Overlay */
+        #success-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Pick Your Reward 🎁</h1>
+    <p>Since you signed the contract, select <b>ONE</b> gift from Ebin.</p>
+
+    <div class="gift-container">
+        
+        <div class="gift-card expensive-card" onclick="selectGift('iphone')">
+            <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1725208060595" class="gift-image" alt="iPhone">
+            <div class="gift-title">iPhone 16 Pro Max</div>
+            <div class="gift-price">Price: ₹1,59,900</div>
+            <button class="btn-select">BUY NOW</button>
+        </div>
+
+        <div class="gift-card expensive-card" onclick="selectGift('ring')">
+            <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop" class="gift-image" alt="Diamond Ring">
+            <div class="gift-title">Solitaire Diamond</div>
+            <div class="gift-price">Price: ₹4,50,000</div>
+            <button class="btn-select">BUY NOW</button>
+        </div>
+
+        <div class="gift-card free-card" onclick="selectGift('love')">
+            <img src="https://media.giphy.com/media/l4pTfx2qLszoacZRS/giphy.gif" class="gift-image hug-gif" alt="Hug">
+            <div class="gift-title">Big Hug & Kiss</div>
+            <div class="gift-price" style="color: #e91e63;">Price: FREE ❤️</div>
+            <button class="btn-select">CLAIM NOW</button>
+        </div>
+
+    </div>
+
+    <div id="success-overlay">
+        <div class="modal-content">
+            <h1 style="font-size: 4rem; margin: 0;">😘</h1>
+            <h2 style="color: #d81b60; margin-top: 10px;">Good Choice!</h2>
+            <p style="font-size: 1.1rem; color: #555; font-family: 'Noto Sans Malayalam', sans-serif;">
+                <b>iPhone</b> വാങ്ങാനുള്ള കാശ് Subway-യിൽ നിന്ന് കിട്ടില്ല...<br>
+                <b>Diamond</b> വാങ്ങാൻ എന്റെ കിഡ്‌നി വിൽക്കേണ്ടി വരും...<br>
+                <br>
+                അതുകൊണ്ട് ഇത് വെച്ച് അഡ്ജസ്റ്റ് ചെയ്യ്! 😉
+            </p>
+            <p style="color: #888; font-size: 0.9rem;">(Now, let's fly away...)</p>
+            
+            <button class="btn-select" style="background-color: #333;" onclick="goToSpin()">FIND YOUR FUTURE 🎰</button>
+        </div>
+    </div>
+
+    <script>
+        function selectGift(gift) {
+            if (gift === 'iphone') {
+                alert("⚠️ Transaction Failed!\n\nError: 'Subway Manager Salary' insufficient for this item.\n(സ്വന്തം പൈസക്ക് മേടിച്ചോ!)");
+            } else if (gift === 'ring') {
+                alert("⚠️ System Error!\n\nEbin's Bank Balance: ₹150\nKidney Status: Not yet sold.\n(Try again later!)");
+            } else if (gift === 'love') {
+                // Success!
+                document.getElementById('success-overlay').style.display = 'flex';
+                launchConfetti();
+            }
+        }
+
+        // UPDATE: This function now redirects to ticket.html
+        function goToSpin() {
+    		window.location.href = "spin.html";
+		}
+
+        // Confetti Effect
+        function launchConfetti() {
+            const colors = ['#ff4081', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0'];
+            for(let i=0; i<150; i++) {
+                const conf = document.createElement('div');
+                conf.style.position = 'fixed';
+                conf.style.width = Math.random() * 10 + 5 + 'px';
+                conf.style.height = Math.random() * 5 + 5 + 'px';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = '-20px';
+                conf.style.zIndex = '2000';
+                conf.style.opacity = Math.random() + 0.5;
+                
+                // Animation physics
+                const duration = Math.random() * 3 + 2;
+                conf.style.transition = `top ${duration}s ease-out, transform ${duration}s linear, opacity ${duration}s`;
+                
+                document.body.appendChild(conf);
+
+                // Trigger animation
+                setTimeout(() => {
+                    conf.style.top = '110vh';
+                    conf.style.transform = `rotate(${Math.random() * 360 + 360}deg) translateX(${Math.random() * 100 - 50}px)`;
+                    conf.style.opacity = '0';
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>
